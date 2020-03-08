@@ -13,6 +13,7 @@ import com.mc.domain.Cidade;
 import com.mc.domain.Cliente;
 import com.mc.domain.Endereco;
 import com.mc.domain.Estado;
+import com.mc.domain.ItemPedido;
 import com.mc.domain.Pagamento;
 import com.mc.domain.PagamentoComBoleto;
 import com.mc.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.mc.repositories.CidadeRepository;
 import com.mc.repositories.ClienteRepository;
 import com.mc.repositories.EnderecoRepository;
 import com.mc.repositories.EstadoRepository;
+import com.mc.repositories.ItemPedidoRepository;
 import com.mc.repositories.PagamentoRepository;
 import com.mc.repositories.PedidoRepository;
 import com.mc.repositories.ProdutoRepository;
@@ -55,6 +57,9 @@ public class McApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	
 	public static void main(String[] args) {
@@ -121,6 +126,20 @@ public class McApplication implements CommandLineRunner {
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
+		
+		ItemPedido ip1 = new ItemPedido(ped1,p1,0.00,1,2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1,p3,0.0,2,80.00);
+		ItemPedido ip3 = new ItemPedido(ped2,p2,100.00,1,800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1,ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3));
+
 	}
 
 }
